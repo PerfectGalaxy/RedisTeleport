@@ -1,0 +1,5 @@
+name: RedisTeleport
+version: 0.0.1
+author: PerfectGalaxy
+description: RedisTeleport
+main: perfect.teleport.RedisTeleport
