@@ -37,7 +37,7 @@ public class TPAAcceptCommand implements CommandClass {
             }
         }
 
-        if (!redisTeleport.getTpaManager().getTeleports().containsKey(player.getUniqueId())) {
+        if (!redisTeleport.getTpaManager().getTeleports().containsKey(player.getUniqueId()) && !requestRedis) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', redisTeleport.getLang().getString("Messages.TPA.No_Request").replace("%prefix%", redisTeleport.getPrefix())));
             return true;
         }
@@ -50,6 +50,7 @@ public class TPAAcceptCommand implements CommandClass {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', redisTeleport.getLang().getString("Messages.TPA.Accept_Target_Message").replace("%prefix%", redisTeleport.getPrefix()).replace("%player%", Bukkit.getPlayer(redisTeleport.getTpaManager().getTeleports().get(player.getUniqueId())).getName())));
             Bukkit.getPlayer(redisTeleport.getTpaManager().getTeleports().get(player.getUniqueId())).sendMessage(ChatColor.translateAlternateColorCodes('&', redisTeleport.getLang().getString("Messages.TPA.Accept_Sender_Message").replace("%prefix%", redisTeleport.getPrefix()).replace("%player%", player.getName())));
             Bukkit.getPlayer(redisTeleport.getTpaManager().getTeleports().get(player.getUniqueId())).teleport(player);
+            redisTeleport.getTpaManager().getTeleports().remove(player.getUniqueId());
             return true;
         }
 
@@ -59,8 +60,12 @@ public class TPAAcceptCommand implements CommandClass {
         }
 
         if (requestRedis) {
+            try (Jedis jedis = redisTeleport.getRedisConnection().getJedisPool().getResource()) {
+                jedis.hdel("TPARequests", player.getName() + ";" + Bukkit.getServerName());
+            }
+
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', redisTeleport.getLang().getString("Messages.TPA.Bungee_Accept_Target_Message").replace("%prefix%", redisTeleport.getPrefix()).replace("%player%", sender)));
-            redisTeleport.getRedisConnection().sendMessage("TPA", "Accept", sender.split(";")[0] + ";" + sender.split(";")[1] + player.getName() + ";" + Bukkit.getServerName());
+            redisTeleport.getRedisConnection().sendMessage("TPA", "Accept", sender.split(";")[0] + ";" + sender.split(";")[1] + ";" + player.getName() + ";" + Bukkit.getServerName());
         }
 
         return true;

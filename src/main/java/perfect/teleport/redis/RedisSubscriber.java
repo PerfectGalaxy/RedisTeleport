@@ -33,9 +33,6 @@ public class RedisSubscriber extends JedisPubSub {
 
                     Bukkit.getPlayer(target).sendMessage(ChatColor.translateAlternateColorCodes('&', redisTeleport.getLang().getString("Messages.TPA.Bungee_Target_Message").replace("%prefix%", redisTeleport.getPrefix()).replace("%player%", sender).replace("%server_sender%", senderServer).replace("%seconds%", redisTeleport.getConfig().getInt("TPA.TimeOut") + "")));
                     Bukkit.getPlayer(target).spigot().sendMessage(redisTeleport.getTpaManager().getAcceptMessage(), redisTeleport.getTpaManager().getDenyMessage());
-
-                    redisTeleport.getTpaManager().getTeleports().put(Bukkit.getPlayer(target).getUniqueId(), null);
-                    redisTeleport.getTpaManager().startCountdown(null, Bukkit.getPlayer(target).getUniqueId());
                     break;
                 case "Accept":
                     sender = msg[1];
@@ -59,9 +56,8 @@ public class RedisSubscriber extends JedisPubSub {
                     sender = msg[1];
                     targetServer =  msg[4];
                     target = msg[3];
-                    senderServer = msg[2];
 
-                    if(!senderServer.equals(targetServer)){
+                    if(!Bukkit.getServerName().equals(targetServer)){
                         break;
                     }
 

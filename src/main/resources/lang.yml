@@ -13,7 +13,7 @@ Messages:
     Bungee_Sender_Message: "%prefix% &7You have successfully sent a teleportation request to &b%player% &9(&b%server_target%&9)&7. He has &b%seconds% &7to accept!"
     Bungee_Target_Message: "%prefix% &7You have received a teleportation request from &b%player% &9(&b%server_sender%&9)&7. You have &b%seconds% &7to accept!"
 
-    Bungee_Accept_Sender_Message: "%prefix% &7Player &b%player% &9(&b%target_server&9) &7 has accepted your request for teleportation!"
+    Bungee_Accept_Sender_Message: "%prefix% &7Player &b%player% &9(&b%server_target%&9) &7 has accepted your request for teleportation!"
     Bungee_Accept_Target_Message: "%prefix% &7You have successfully accepted the teleportation request from &b%player%&7!"
 
     Player_No_Exists: "%prefix% &7Sorry! But I can not find that player!"

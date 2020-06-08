@@ -45,7 +45,7 @@ public class TPAManager {
     public void startCountdown(UUID sender, UUID target){
         RedisTeleport redisTeleport = JavaPlugin.getPlugin(RedisTeleport.class);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(redisTeleport, () -> {
-            if(teleports.containsKey(target)){
+            if(teleports.containsKey(target) && teleports.get(target) != null){
                 Bukkit.getPlayer(sender).sendMessage(ChatColor.translateAlternateColorCodes('&', redisTeleport.getLang().getString("Messages.TPA.Sender_Message_TimeOut").replace("%prefix%", redisTeleport.getPrefix()).replace("%player%", Bukkit.getPlayer(target).getName())));
                 Bukkit.getPlayer(target).sendMessage(ChatColor.translateAlternateColorCodes('&', redisTeleport.getLang().getString("Messages.TPA.Target_Message_TimeOut").replace("%prefix%", redisTeleport.getPrefix()).replace("%player%", Bukkit.getPlayer(sender).getName())));
                 teleports.remove(target);
